@@ -1,38 +1,37 @@
 package com.giomodiogo.service;
 
 import com.giomodiogo.model.Deck;
-import org.springframework.http.ResponseEntity;
+import com.giomodiogo.repository.DeckRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
+@AllArgsConstructor
 public class DeckService {
 
-    private static List<Deck> decks = Stream.of(
-            Deck.builder().id(1).name("English").build(),
-            Deck.builder().id(2).name("French").build()
-    ).collect(Collectors.toList());
+    private final DeckRepository deckRepository;
 
     public List<Deck> list() {
-        return decks;
+        return deckRepository.findAll();
+    }
+
+    public List<Deck> findByName(String name) {
+        return deckRepository.findByNameIgnoreCaseContaining(name);
     }
 
     public Optional<Deck> getById(final Integer id) {
-        return decks.stream().filter(deck -> deck.getId() == id).findFirst();
+        return deckRepository.findById(id);
     }
 
-    public void delete(final Integer id) {
-        decks.removeIf(deck -> deck.getId() == id);
+    public void delete(final Deck deck) {
+        deckRepository.delete(deck);
     }
 
     public Deck save(final Deck deck) {
-        Integer id = decks.size() + 1;
-        deck.setId(id);
-        decks.add(deck);
-        return deck;
+        return deckRepository.save(deck);
+
     }
 }

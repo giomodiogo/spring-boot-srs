@@ -26,7 +26,7 @@ public class Deck {
     @Column(length = 100)
     private String name;
 
-    @OneToMany(mappedBy = "card")
+    @OneToMany(mappedBy = "deck")
     private List<Card> cards;
 }
 

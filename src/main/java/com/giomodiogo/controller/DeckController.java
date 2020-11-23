@@ -10,8 +10,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("decks")
@@ -19,8 +17,6 @@ import java.util.stream.Stream;
 public class DeckController {
 
     private final DeckService service;
-
-    // TODO PUT
 
     @GetMapping
     public ResponseEntity<List<Deck>> list() {
@@ -32,10 +28,26 @@ public class DeckController {
         return service.getById(id).map(deck -> ResponseEntity.ok(deck)).orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping(path = "/findByName")
+    public ResponseEntity<List<Deck>> findByName(@RequestParam(value = "name") String name) {
+        return ResponseEntity.ok(service.findByName(name));
+    }
+
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<Void> delete(@PathVariable int id) {
-        service.delete(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity delete(@PathVariable int id) {
+        return service.getById(id).map(deck -> {
+            service.delete(deck);
+            return ResponseEntity.noContent().build();
+        }).orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping(path = "/{id}")
+    public ResponseEntity update(@PathVariable int id, @RequestBody @Valid Deck deck) {
+        return service.getById(id).map(deckFound -> {
+            deck.setId(id);
+            service.save(deck);
+            return ResponseEntity.ok().build();
+        }).orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
