@@ -1,9 +1,6 @@
 package com.giomodiogo.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -30,12 +27,13 @@ public class Card {
     @Lob
     private String back;
 
+    //TODO Enum column
     @NotNull
     @NotEmpty
     @Column(length = 10)
     private String status;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Deck.class)
     @JoinColumn(name = "deck_id", nullable = false)
     private Deck deck;
 }

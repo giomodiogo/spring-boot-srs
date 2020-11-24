@@ -1,9 +1,7 @@
 package com.giomodiogo.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -27,6 +25,7 @@ public class Deck {
     private String name;
 
     @OneToMany(mappedBy = "deck")
+    @JsonBackReference
     private List<Card> cards;
 }
 
