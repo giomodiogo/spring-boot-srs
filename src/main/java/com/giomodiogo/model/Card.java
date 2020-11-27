@@ -27,7 +27,7 @@ public class Card {
     @Lob
     private String back;
 
-    //TODO Enum column
+    // EMPTY, EASY, MEDIUM, HARD
     @NotNull
     @NotEmpty
     @Column(length = 10)

@@ -18,6 +18,10 @@ public class CardService {
         return cardRepository.findAll();
     }
 
+    public List<Card> findAllByStatus(String status) {
+        return cardRepository.findByStatus(status);
+    }
+
     public Optional<Card> getById(final Integer id) {
         return cardRepository.findById(id);
     }

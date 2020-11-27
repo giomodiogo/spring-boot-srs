@@ -1,7 +1,6 @@
 package com.giomodiogo.controller;
 
 import com.giomodiogo.model.Card;
-import com.giomodiogo.model.Deck;
 import com.giomodiogo.service.CardService;
 import com.giomodiogo.service.DeckService;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +11,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("cards")
@@ -30,6 +28,11 @@ public class CardController {
     @GetMapping(path = "/{id}")
     public ResponseEntity getById(@PathVariable int id) {
         return service.getById(id).map(card -> ResponseEntity.ok(card)).orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping(path = "/status/{status}")
+    public ResponseEntity<List<Card>> getByStatus(@PathVariable String status) {
+        return ResponseEntity.ok(service.findAllByStatus(status));
     }
 
     @DeleteMapping(path = "/{id}")
